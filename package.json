@@ -4,7 +4,7 @@
   "description": "Dashboard",
   "main": "index.js",
   "scripts": {
-    "install": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
+    "installMERN": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
   },
@@ -18,7 +18,7 @@
     "url": "https://github.com/nipunchamikara/rad-project/issues"
   },
   "homepage": "https://github.com/nipunchamikara/rad-project#readme",
-  "devDependencies": {
-    "concurrently": "^7.5.0"
-  }
+    "dependencies": {
+        "concurrently": "^7.5.0"
+    }
 }
