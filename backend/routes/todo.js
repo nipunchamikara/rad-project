@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const Todo = require('../models/todo.model')
+const authenticate = require('../middleware/authentication')
 
 // Add Todo
-router.post('/', async (req, res, next) => {
-
-  // TODO - Add authentication
-  // This email is taken from JWT 
-  let email = "useremailgoeshere"
+router.post('/', authenticate, async (req, res, next) => {
+  let email = req.user.email
 
   try {
     const todo = new Todo({
@@ -16,7 +14,7 @@ router.post('/', async (req, res, next) => {
     })
 
     const result = await todo.save()
-    res.status(200).json({ todo: todo })
+    res.status(200).json({ todo: result })
 
   }catch(err) {
     console.log(err)
@@ -25,11 +23,9 @@ router.post('/', async (req, res, next) => {
 })
 
 // Get all the todo for a particular user
-router.get('/all', async (req, res, next) => {
+router.get('/all', authenticate, async (req, res, next) => {
 
-  // TODO - Add authentication
-  // This email is taken from JWT 
-  let email = "useremailgoeshere"
+  let email = req.user.email
 
   try {
     const todos = await Todo.find({ email: email })
@@ -42,18 +38,14 @@ router.get('/all', async (req, res, next) => {
 })
 
 // Change a todo
-router.put('/', async (req, res, next) => {
-  // TODO - Add authentication
-  // This email is taken from JWT 
-  let email = "useremailgoeshere"
-
+router.put('/', authenticate, async (req, res, next) => {
   try {
-    await Todo.updateOne({ _id: req.body.id }, { 
+    await Todo.findByIdAndUpdate({ _id: req.body._id }, { 
       task: req.body.task,
       isCompleted: req.body.isCompleted
      })
 
-     const updatedTodo = Todo.findOne({ _id: req.body.id })
+     const updatedTodo = await Todo.findById({ _id: req.body._id })
      res.status(200).json({ todo: updatedTodo })
 
   }catch (err) {
@@ -61,16 +53,14 @@ router.put('/', async (req, res, next) => {
     res.status(500).json({ error: 'Error occured while updating' })
   }
 
+})
+
 // Delete a todo
-router.delete('/', async (req, res, next) => {
-
-  // TODO - Add authentication
-  // This email is taken from JWT 
-  let email = "useremailgoeshere"
-
+router.delete('/', authenticate, async (req, res) => {
+  console.log('hello')
   try {
-    await Todo.deleteOne({ _id: req.body.id })
-    res.status(200)
+    await Todo.findByIdAndDelete({ _id: req.body._id })
+    res.status(200).json({ status: 'ok' })
 
   }catch (err) {
     console.log(err)
@@ -78,4 +68,6 @@ router.delete('/', async (req, res, next) => {
   }
 })
 
-})
+
+
+module.exports = router;
