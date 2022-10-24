@@ -35,7 +35,7 @@ router.post('/register', async (req, res, next) => {
 
 // Login
 router.post('/login', async (req, res, next) => {
-
+  
   const { createHmac } = await import('node:crypto');
   const hashedPassword = createHmac('sha256', secret)
               .update(req.body.password)
