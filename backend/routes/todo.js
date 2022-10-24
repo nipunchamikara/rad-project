@@ -18,11 +18,12 @@ router.post('/', authenticate, async (req, res, next) => {
 
   }catch(err) {
     console.log(err)
-    res.status(500).json({ error: 'Error occured while saving' })
+    res.status(500).json({ error: 'Error occurred while saving' })
   } 
 })
 
 // Get all the todo for a particular user
+
 router.get('/all', authenticate, async (req, res, next) => {
   let userId = req.user._id
 
@@ -32,12 +33,12 @@ router.get('/all', authenticate, async (req, res, next) => {
 
   }catch(err) {
     console.log(err)
-    res.status(500).json({ error: 'Error occured while fetching' })
+    res.status(500).json({ error: 'Error occurred while fetching' })
   }
 })
 
 // Change a todo
-router.put('/', authenticate, async (req, res, next) => {
+router.put('/', authenticate, async (req, res) => {
   try {
     await Todo.findByIdAndUpdate({ _id: req.body._id }, { 
       task: req.body.task,
@@ -49,7 +50,7 @@ router.put('/', authenticate, async (req, res, next) => {
 
   }catch (err) {
     console.log(err)
-    res.status(500).json({ error: 'Error occured while updating' })
+    res.status(500).json({ error: 'Error occurred while updating' })
   }
 
 })
@@ -63,7 +64,7 @@ router.delete('/:id', authenticate, async (req, res) => {
 
   }catch (err) {
     console.log(err)
-    res.status(500).json({ error: 'Error occured while Deleting' })
+    res.status(500).json({ error: 'Error occurred while Deleting' })
   }
 })
 

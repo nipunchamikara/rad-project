@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
 const secret = 'secret123';
 
 // Add new user - registration
-router.post('/register', async (req, res, next) => {
+router.post('/register', async (req, res) => {
 
   const { createHmac } = await import('node:crypto');
   const hashedPassword = createHmac('sha256', secret)
@@ -20,7 +19,7 @@ router.post('/register', async (req, res, next) => {
       password: hashedPassword
     })
 
-    const result = await user.save()
+    await user.save()
     res.status(200).json({ user: {
       _id: user._id,
       name: user.name,
@@ -29,13 +28,13 @@ router.post('/register', async (req, res, next) => {
   
   }catch(err) {
     console.log(err)
-    res.status(500).json({ error: 'Error occured while adding user' })
+    res.status(500).json({ error: 'Error occurred while adding user' })
   } 
 });
 
 // Login
-router.post('/login', async (req, res, next) => {
-  
+router.post('/login', async (req, res) => {
+
   const { createHmac } = await import('node:crypto');
   const hashedPassword = createHmac('sha256', secret)
               .update(req.body.password)
