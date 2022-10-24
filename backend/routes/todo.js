@@ -5,11 +5,11 @@ const authenticate = require('../middleware/authentication')
 
 // Add Todo
 router.post('/', authenticate, async (req, res, next) => {
-  let email = req.user.email
+  let userId = req.user._id
 
   try {
     const todo = new Todo({
-      email: email,
+      userId: userId,
       task: req.body.task
     })
 
@@ -24,11 +24,10 @@ router.post('/', authenticate, async (req, res, next) => {
 
 // Get all the todo for a particular user
 router.get('/all', authenticate, async (req, res, next) => {
-
-  let email = req.user.email
+  let userId = req.user._id
 
   try {
-    const todos = await Todo.find({ email: email })
+    const todos = await Todo.find({ userId: userId })
     res.status(200).json({ todos: todos })
 
   }catch(err) {
@@ -56,10 +55,10 @@ router.put('/', authenticate, async (req, res, next) => {
 })
 
 // Delete a todo
-router.delete('/', authenticate, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   console.log('hello')
   try {
-    await Todo.findByIdAndDelete({ _id: req.body._id })
+    await Todo.findByIdAndDelete({ _id: req.params.id })
     res.status(200).json({ status: 'ok' })
 
   }catch (err) {
