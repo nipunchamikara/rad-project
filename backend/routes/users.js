@@ -1,66 +1,87 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken')
-const secret = 'secret123';
+const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+
+const secret = "secret123";
 
 // Add new user - registration
-router.post('/register', async (req, res) => {
-
-  const { createHmac } = await import('node:crypto');
-  const hashedPassword = createHmac('sha256', secret)
-              .update(req.body.password)
-              .digest('hex');
+router.post("/register", async (req, res) => {
+  const { createHmac } = await import("node:crypto");
+  const hashedPassword = createHmac("sha256", secret)
+    .update(req.body.password)
+    .digest("hex");
 
   try {
     const user = new User({
-      name: req.body.name,
+      username: req.body.username,
       email: req.body.email,
-      password: hashedPassword
-    })
+      password: hashedPassword,
+    });
 
-    await user.save()
-    res.status(200).json({ user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email
-    } })
-  
-  }catch(err) {
-    console.log(err)
-    res.status(500).json({ error: 'Error occurred while adding user' })
-  } 
+    await user.save();
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      secret,
+      { expiresIn: "1h" },
+      (err, token) => {
+        res.status(200).json({
+          message: "Auth successful",
+          token: token,
+        });
+      }
+    );
+    res.status(200).json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        token,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error occurred while adding user" });
+  }
 });
 
-// Login
-router.post('/login', async (req, res) => {
-
-  const { createHmac } = await import('node:crypto');
-  const hashedPassword = createHmac('sha256', secret)
-              .update(req.body.password)
-              .digest('hex');
-
+router.post("/login", async (req, res) => {
   try {
+    const { createHmac } = await import("node:crypto");
+    const hashedPassword = createHmac("sha256", secret)
+      .update(req.body.password)
+      .digest("hex");
+
     const user = await User.findOne({
-      email: req.body.email,
-      password: hashedPassword
-    })
+      username: req.body.username,
+      password: hashedPassword,
+    });
 
-    if(user) {
-      const token = jwt.sign({
-        email: user.email
-      }, 'secret123')
-
-      return res.status(200).json({ status: 'ok', user: token })
-      
-    }else {
-      res.status(403).json({ error: 'Invalid details' })
+    if (user) {
+      const token = jwt.sign(
+        {
+          id: user._id,
+        },
+        secret,
+        { expiresIn: "1h" },
+        (err, token) =>
+          res.status(200).json({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            token: token,
+          })
+      );
+    } else {
+      console.log("User not found");
+      res.status(403).json({ error: "Invalid details" });
     }
-  
-  }catch(err) {
-    console.log(err)
-    res.status(500).json({ error: 'Login failed' })
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Login failed" });
   }
-})
+});
 
 module.exports = router;
