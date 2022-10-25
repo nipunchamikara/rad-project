@@ -18,7 +18,8 @@ function MedicineList(props) {
 		<div>
 			{
 				medicineList.map((medicine) => {
-					return <MedicineListRow medicineName={medicine.medicineName}/>;
+					return <MedicineListRow medicineName={medicine.medicineName} medicineTime={medicine.medicineTime}
+					                        medicineQty={medicine.medicineQuantity}/>;
 				})
 			}
 		</div>

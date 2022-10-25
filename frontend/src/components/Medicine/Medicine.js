@@ -20,11 +20,11 @@ function Medicine(props) {
 									                                          aria-describedby="medicineName"/>
 								</div>
 								<div className="mb-3">
-									<input type={"radio"} id={"medicineTime"} name={"Morning"} value={"tablet"}/>
+									<input type={"radio"} id={"medicineTime"} name={"Morning"} value={"Morning"}/>
 									<label htmlFor={"medicineType"}>Morning</label>
-									<input type={"radio"} id={"medicineTime"} name={"Evening"} value={"capsule"}/>
+									<input type={"radio"} id={"medicineTime"} name={"Evening"} value={"Evening"}/>
 									<label htmlFor={"medicineType"}>Evening</label>
-									<input type={"radio"} id={"medicineTime"} name={"Night"} value={"syrup"}/>
+									<input type={"radio"} id={"medicineTime"} name={"Night"} value={"Night"}/>
 									<label htmlFor={"medicineType"}>Night</label>
 								</div>
 								<div className="mb-3">
