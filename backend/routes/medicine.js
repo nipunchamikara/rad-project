@@ -65,7 +65,7 @@ router.put("/change", authenticate, async (req, res) => {
 });
 
 // Delete a medicine
-router.delete('/delete:id', authenticate, async (req, res) => {
+router.delete('/delete/:id', authenticate, async (req, res) => {
 	try {
 		await Medicine.findByIdAndDelete({
 			_id: req.params.id
