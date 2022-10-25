@@ -7,12 +7,12 @@ const secret = "secret123";
 
 // Add new user - registration
 router.post("/register", async (req, res) => {
-  const { createHmac } = await import("node:crypto");
-  const hashedPassword = createHmac("sha256", secret)
+  try {
+    const { createHmac } = await import("node:crypto");
+    const hashedPassword = createHmac("sha256", secret)
     .update(req.body.password)
     .digest("hex");
 
-  try {
     const user = new User({
       username: req.body.username,
       email: req.body.email,
@@ -22,25 +22,20 @@ router.post("/register", async (req, res) => {
     await user.save();
     const token = jwt.sign(
       {
-        id: user._id,
+        _id: user._id,
+        username: user.username,
+        email: user.email
       },
       secret,
       { expiresIn: "1h" },
       (err, token) => {
         res.status(200).json({
           message: "Auth successful",
-          token: token,
+          token: token
         });
       }
     );
-    res.status(200).json({
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        token,
-      },
-    });
+    
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while adding user" });
@@ -62,16 +57,16 @@ router.post("/login", async (req, res) => {
     if (user) {
       const token = jwt.sign(
         {
-          id: user._id,
+          _id: user._id,
+          username: user.username,
+          email: user.email
         },
         secret,
         { expiresIn: "1h" },
         (err, token) =>
           res.status(200).json({
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            token: token,
+            message: "Auth successful",
+            token: token
           })
       );
     } else {

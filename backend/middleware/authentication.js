@@ -6,14 +6,17 @@ async function authenticate(req, res, next) {
 
   try {
     const decode = jwt.verify(token, 'secret123')
-    const email = decode.email
-    const user = await User.findOne({ email: email })
-    req.user = {
-      _id: user._id,
-      email: user.email,
-      name: user.name
+    if(decode) {
+      req.user = {
+        _id: decode._id,
+        email: decode.email,
+        name: decode.name
+      }
+      next()
+    }else {
+      throw "No user found for email: " + email
     }
-    next()
+   
 
   }catch (err) {
     console.log(err)
