@@ -55,7 +55,6 @@ router.put("/", authenticate, async (req, res) => {
 
 // Delete a todo
 router.delete("/", authenticate, async (req, res) => {
-  console.log("hello");
   try {
     await Todo.findByIdAndDelete({ _id: req.body._id });
     res.status(200).json({ status: "ok" });

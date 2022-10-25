@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
 import { LOGOUT } from "../../state/constants/actionTypes";
+
+import Notes from "../Notes";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -28,11 +31,11 @@ const Home = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div className="container-fluid">
-          <a className="navbar-brand fs-4" href="#">
+          <span className="navbar-brand fs-4">
             DASH<b>BOARD</b>
-          </a>
+          </span>
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
               <span className="me-2 fs-5">
@@ -49,7 +52,9 @@ const Home = () => {
           </ul>
         </div>
       </nav>
-      <div className="container"></div>
+      <div className="container">
+        <Notes />
+      </div>
     </>
   );
 };
