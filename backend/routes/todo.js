@@ -4,17 +4,19 @@ const Todo = require("../models/todo.model");
 const authenticate = require("../middleware/authentication");
 
 // Add Todo
-router.post("/", authenticate, async (req, res, next) => {
-  let email = req.user.email;
+
+router.post('/', authenticate, async (req, res, next) => {
+  let userId = req.user._id
 
   try {
     const todo = new Todo({
-      email: email,
-      task: req.body.task,
-    });
+      userId: userId,
+      task: req.body.task
+    })
 
-    const result = await todo.save();
-    res.status(200).json({ todo: result });
+    const result = await todo.save()
+    res.status(200).json({ todo: result })
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while saving" });
@@ -22,15 +24,16 @@ router.post("/", authenticate, async (req, res, next) => {
 });
 
 // Get all the todo for a particular user
-router.get("/all", authenticate, async (req, res) => {
-  let email = req.user.email;
+router.get('/all', authenticate, async (req, res, next) => {
+  let userId = req.user._id
 
   try {
-    const todos = await Todo.find({ email: email });
-    res.status(200).json({ todos: todos });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Error occurred while fetching" });
+    const todos = await Todo.find({ userId: userId })
+    res.status(200).json({ todos: todos })
+
+  }catch(err) {
+    console.log(err)
+    res.status(500).json({ error: 'Error occurred while fetching' })
   }
 });
 
@@ -54,13 +57,14 @@ router.put("/", authenticate, async (req, res) => {
 });
 
 // Delete a todo
-router.delete("/", authenticate, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   try {
-    await Todo.findByIdAndDelete({ _id: req.body._id });
-    res.status(200).json({ status: "ok" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Error occurred while Deleting" });
+    await Todo.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).json({ status: 'ok' })
+
+  }catch (err) {
+    console.log(err)
+    res.status(500).json({ error: 'Error occurred while Deleting' })
   }
 });
 

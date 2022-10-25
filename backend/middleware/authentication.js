@@ -13,18 +13,17 @@ async function authenticate(req, res, next) {
   const token = auth.split(" ")[1];
 
   try {
-    const decode = jwt.verify(token, "secret123");
-    const id = decode.id;
-    const user = await User.findOne({ _id: id });
+    const decode = jwt.verify(token, 'secret123')
     req.user = {
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-    };
-    next();
-  } catch (err) {
-    console.log(err);
-    res.status(401).json({ error: "Invalid token" });
+      _id: decode._id,
+      email: decode.email,
+      name: decode.name
+    }
+    next()
+  
+  }catch (err) {
+    console.log(err)
+    res.status(401).json({ error: 'Invalid token' })
   }
 }
 
