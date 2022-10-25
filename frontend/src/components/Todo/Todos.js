@@ -13,11 +13,7 @@ import TodoEdit from "./TodoEdit";
 import ErrorToast from "./ErrorToast";
 
 function Todos() {
-  const [currentEditingTodo, setCurrentEditingTodo] = useState({
-    task: "",
-    _id: null,
-    isCompleted: false,
-  });
+  const [currentEditingTodo, setCurrentEditingTodo] = useState(null);
   const [isWarning, setIsWarning] = useState(false);
 
   const dispatch = useDispatch();
