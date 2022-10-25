@@ -10,6 +10,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const todoRouter = require("./routes/todo");
 const noteRouter = require("./routes/note");
+const medicineRouter = require("./routes/medicine");
 
 app.use(cors());
 app.use(logger("dev"));
@@ -22,6 +23,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/todo", todoRouter);
 app.use("/notes", noteRouter);
+app.use("/medicine", medicineRouter);
 
 const CONNECTION_URL =
   "mongodb+srv://root:qkR2QiUNPM3v2GG8@cluster0.t8r9v4m.mongodb.net/?retryWrites=true&w=majority";
