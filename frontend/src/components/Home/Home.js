@@ -4,7 +4,8 @@ import { useDispatch } from "react-redux";
 
 import { LOGOUT } from "../../state/constants/actionTypes";
 
-import Notes from "../Notes";
+import Notes from "../Notes/Notes";
+import Todos from "../Todo/Todos";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,15 +13,15 @@ const Home = () => {
 
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("profile"));
-    if (!user) {
+    const token = JSON.parse(localStorage.getItem("profile")).token;
+    if (!token) {
       navigate("/auth");
     } else {
-      const decodedToken = JSON.parse(atob(user.token.split(".")[1]));
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         navigate("/auth");
       }
-      setUser(user);
+      setUser(decodedToken);
     }
   }, [navigate]);
 
@@ -54,6 +55,7 @@ const Home = () => {
       </nav>
       <div className="container">
         <Notes />
+        <Todos />
       </div>
     </>
   );

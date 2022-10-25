@@ -21,7 +21,7 @@ router.post("/", authenticate, async (req, res, next) => {
   }
 });
 
-// Get all the notes for a particular user
+// Get all the Notes for a particular user
 router.get("/", authenticate, async (req, res, next) => {
   const _id = req.user._id;
 
@@ -38,7 +38,7 @@ router.get("/", authenticate, async (req, res, next) => {
 router.patch("/:id", authenticate, async (req, res, next) => {
   try {
     await Note.findByIdAndUpdate(
-      { _id: req.body._id },
+      { _id: req.params.id },
       {
         ...req.body,
         modifiedAt: new Date().toISOString(),

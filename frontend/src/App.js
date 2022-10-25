@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Auth from "./components/Auth";
-import Home from "./components/Home";
+import Auth from "./components/Auth/Auth";
+import Home from "./components/Home/Home";
 
 const App = () => {
   return (

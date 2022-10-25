@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/todo", todoRouter);
-app.use("/notes", noteRouter);
+app.use("/Notes", noteRouter);
 
 const CONNECTION_URL =
   "mongodb+srv://root:qkR2QiUNPM3v2GG8@cluster0.t8r9v4m.mongodb.net/?retryWrites=true&w=majority";
