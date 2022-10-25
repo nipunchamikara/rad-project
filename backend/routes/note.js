@@ -5,16 +5,16 @@ const authenticate = require("../middleware/authentication");
 
 // Add Note
 router.post("/", authenticate, async (req, res, next) => {
-  let id = req.user._id;
+  const _id = req.user._id;
 
   try {
     const note = new Note({
-      id: id,
-      note: req.body.note,
+      ...req.body,
+      user: _id,
     });
 
     const result = await note.save();
-    res.status(200).json({ note: result });
+    res.status(200).json(result);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while saving" });
@@ -23,11 +23,11 @@ router.post("/", authenticate, async (req, res, next) => {
 
 // Get all the notes for a particular user
 router.get("/", authenticate, async (req, res, next) => {
-  let id = req.user._id;
+  const _id = req.user._id;
 
   try {
-    const notes = await Note.find({ id: id });
-    res.status(200).json({ notes: notes });
+    const notes = await Note.find({ user: _id }).sort({ modifiedAt: -1 });
+    res.status(200).json(notes);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while fetching" });
@@ -35,17 +35,18 @@ router.get("/", authenticate, async (req, res, next) => {
 });
 
 // Update a note
-router.put("/", authenticate, async (req, res, next) => {
+router.patch("/:id", authenticate, async (req, res, next) => {
   try {
     await Note.findByIdAndUpdate(
       { _id: req.body._id },
       {
-        note: req.body.note,
+        ...req.body,
+        modifiedAt: new Date().toISOString(),
       }
     );
 
-    const updatedNote = await Note.findById({ _id: req.body._id });
-    res.status(200).json({ note: updatedNote });
+    const updatedNote = await Note.findById({ _id: req.params.id });
+    res.status(200).json(updatedNote);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while updating" });
@@ -53,9 +54,9 @@ router.put("/", authenticate, async (req, res, next) => {
 });
 
 // Delete a note
-router.delete("/", authenticate, async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
-    await Note.findByIdAndDelete({ _id: req.body._id });
+    await Note.findByIdAndDelete({ _id: req.params.id });
     res.status(200).json({ message: "Note deleted successfully" });
   } catch (err) {
     console.log(err);

@@ -22,6 +22,10 @@ const Auth = () => {
     }
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div
       style={{
@@ -30,55 +34,69 @@ const Auth = () => {
       }}
     >
       <div className="container d-flex vh-100 align-items-center justify-content-center white">
-        <div className="col-lg-6 col-12 shadow-sm p-5 bg-white">
+        <div className="col-lg-6 col-12 shadow p-5 bg-white">
           <h1 className="display-6 fw-bold text-center text-uppercase mb-3">
             {isLogin ? "Login" : "Register"}
           </h1>
           <form onSubmit={handleSubmit}>
-            <input
-              className="form-control my-2"
-              type="text"
-              placeholder="Username"
-              value={formData.username}
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
-              }
-            />
-            {!isLogin && (
+            <div className="form-floating my-2">
               <input
-                className="form-control my-2"
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                id="username"
+                name="username"
+                className="form-control"
+                type="text"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
               />
+              <label htmlFor="username">Username</label>
+            </div>
+            {!isLogin && (
+              <div className="form-floating my-2">
+                <input
+                  id="email"
+                  name="email"
+                  className="form-control"
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <label htmlFor="Email">Email</label>
+              </div>
             )}
-            <input
-              className="form-control my-2"
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
+            <div className="form-floating my-2">
+              <input
+                id="password"
+                name="password"
+                className="form-control"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <label htmlFor="password">Password</label>
+            </div>
             <button
-              className="btn btn-primary my-2 text-uppercase"
+              className="btn btn-primary my-2 text-uppercase px-5 py-2"
               type="submit"
             >
               {isLogin ? "Login" : "Register"}
             </button>
           </form>
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <a
+          <button
             className="link-primary"
             onClick={() => setIsLogin((prevIsLogin) => !prevIsLogin)}
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              outline: "none",
+              background: "none",
+              border: "none",
+            }}
           >
             {isLogin ? "Register" : "Login"}
-          </a>
+          </button>
         </div>
       </div>
     </div>
