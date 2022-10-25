@@ -1,30 +1,36 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import MedicineListRow from "./MedicineListRow";
+import { getMedicine } from "../../state/actions/medicine";
 
+function MedicineList({ setMedicineId }) {
+  const medicineList = useSelector((state) => state.medicine);
 
-function MedicineList(props) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getMedicine());
+  }, []);
 
-	const [medicineList, setMedicineList] = useState([]);
-
-	useEffect(() => {
-		axios.post("http://localhost:3030/medicine/all").then((response) => {
-			setMedicineList(response.data);
-		});
-	});
-
-
-	return (
-		<div>
-			{
-				medicineList.map((medicine) => {
-					return <MedicineListRow medicineName={medicine.medicineName} medicineTime={medicine.medicineTime}
-					                        medicineQty={medicine.medicineQuantity}/>;
-				})
-			}
-		</div>
-	);
-
+  return (
+    <div>
+      {medicineList.length > 0 ? (
+        medicineList.map((medicine) => (
+          <MedicineListRow
+            key={medicine._id}
+            medicineName={medicine.medicineName}
+            medicineTime={medicine.medicineTime}
+            medicineQty={medicine.medicineQty}
+            medicineId={medicine._id}
+            setMedicineId={setMedicineId}
+          />
+        ))
+      ) : (
+        <div className="h-100 w-100 d-flex justify-content-center align-items-center">
+          <p>No medicines found</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default MedicineList;

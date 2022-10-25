@@ -65,7 +65,7 @@ function Todos() {
 
       {isWarning && <ErrorToast message={isWarning} />}
 
-      <div className="overflow-auto" style={{ maxHeight: "300px" }}>
+      <div className="overflow-auto p-4" style={{ maxHeight: "300px" }}>
         {!currentEditingTodo && (
           <TodoList
             todos={todos}

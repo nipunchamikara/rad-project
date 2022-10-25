@@ -23,7 +23,7 @@ const Notes = () => {
           <NoteForm currentId={currentId} setCurrentId={setCurrentId} />
         </div>
         <div
-          className="col-lg-8 col-12 overflow-auto"
+          className="col-lg-8 col-12 overflow-auto p-4"
           style={{ maxHeight: "300px" }}
         >
           {notes && notes.length > 0 ? (
