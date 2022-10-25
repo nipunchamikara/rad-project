@@ -21,7 +21,7 @@ router.post("/", authenticate, async (req, res, next) => {
   }
 });
 
-// Get all the notes for a particular user
+// Get all the Notes for a particular user
 router.get("/", authenticate, async (req, res, next) => {
   const _id = req.user._id;
 

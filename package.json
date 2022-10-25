@@ -6,7 +6,7 @@
   "scripts": {
     "installMERN": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+    "dev": "concurrently \"cd backend && npm run devBackend\" \"cd frontend && npm start\" "
   },
   "repository": {
     "type": "git",
