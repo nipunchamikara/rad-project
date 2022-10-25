@@ -17,8 +17,6 @@ router.post('/', authenticate, async (req, res, next) => {
     const result = await todo.save()
     res.status(200).json({ todo: result })
 
-    const result = await todo.save();
-    res.status(200).json({ todo: result });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error occurred while saving" });
