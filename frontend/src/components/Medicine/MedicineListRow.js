@@ -8,13 +8,13 @@ function MedicineListRow(props) {
 			>
 				<div className={"container-fluid"}>
 					<div className={"row"}>
-						<div className={"col"}>
+						<div className={"col-6"}>
 							{props.medicineName}
 						</div>
-						<div className={"col"}>
+						<div className={"col-3"}>
 							{props.medicineTime}
 						</div>
-						<div className={"col"}>
+						<div className={"col-3"}>
 							{props.medicineQty}
 						</div>
 					</div>
