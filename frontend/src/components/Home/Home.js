@@ -13,7 +13,7 @@ const Home = () => {
 
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("profile")).token;
+    const token = JSON.parse(localStorage.getItem("profile"))?.token;
     if (!token) {
       navigate("/auth");
     } else {

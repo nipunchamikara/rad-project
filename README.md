@@ -1,4 +1,5 @@
-# rad-project
+# DashBoard
+A simple Single Page Application (SPA) which helps you track your daily tasks and goals, built using the MERN stack.
 
 ## To install
 First clone the repo to your local machine.
