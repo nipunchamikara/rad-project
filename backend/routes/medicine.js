@@ -40,7 +40,7 @@ router.get('/all', authenticate, async (req, res, next) => {
 })
 
 // Change a medicine
-router.put("/", authenticate, async (req, res) => {
+router.put("/change", authenticate, async (req, res) => {
 	try {
 		await Medicine.findByIdAndUpdate({
 			_id: req.body._id
@@ -65,7 +65,7 @@ router.put("/", authenticate, async (req, res) => {
 });
 
 // Delete a medicine
-router.delete('/:id', authenticate, async (req, res) => {
+router.delete('/delete:id', authenticate, async (req, res) => {
 	try {
 		await Medicine.findByIdAndDelete({
 			_id: req.params.id
