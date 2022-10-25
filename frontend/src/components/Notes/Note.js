@@ -10,7 +10,7 @@ const Note = ({ note, setCurrentId }) => {
     dispatch(deleteNote(_id));
   };
   return (
-    <div className="card mb-3">
+    <div className="card card-hover mb-3 border-0 shadow-sm">
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
         <p className="card-text">{content}</p>
