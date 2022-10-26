@@ -1,44 +1,75 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { Component } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
+// import DatePicker from "react-datepicker";
+import EventList from "./event-list";
+import moment from "moment/moment";
 
-import NoteForm from "./NoteForm";
-import Note from "./Note";
-import {getNotes} from "../../state/actions";
+export default class ReminderLayout extends Component {
+  constructor(props) {
+    super(props);
 
-const Notes = () => {
-  const dispatch = useDispatch();
-  const notes = useSelector((state) => state.notes);
+    this.handleDateChange = this.handleDateChange.bind(this);
 
-  useEffect(() => {
-    dispatch(getNotes());
-  }, [dispatch]);
+    // Date will be initialized to today's date
+    this.state = {
+      date: new Date(),
+      events: this.collectEvents(new Date()),
+    };
+  }
 
-  const [currentId, setCurrentId] = useState(null);
+  collectEvents(date) {
+    let _events = [];
+    date = moment(date).format("YYYY-MM-DD");
+    console.log(date);
+    axios
+      .get("http://localhost:5000/" + date.toString())
+      .then((events) => {
+        console.log(events);
+        _events = events;
+      })
+      .catch((err) => console.err("Error: " + err));
+    return _events;
+  }
 
-  return (
-      <div className="container shadow my-5 p-5">
-        <div className="row">
-          <div className="col-lg-4 col-12">
-            <h1>Events</h1>
-            <NoteForm currentId={currentId} setCurrentId={setCurrentId}/>
-          </div>
-          <div
-              className="col-lg-8 col-12 overflow-auto"
-              style={{maxHeight: "300px"}}
-          >
-            {notes && notes.length > 0 ? (
-                notes.map((note) => (
-                    <Note key={note._id} note={note} setCurrentId={setCurrentId}/>
-                ))
-            ) : (
-                <div className="h-100 w-100 d-flex justify-content-center align-items-center">
-                  <p>Such Empty</p>
-                </div>
-            )}
-          </div>
+  handleDateChange(date) {
+    this.setState({
+      date: date,
+      events: this.collectEvents(date),
+    });
+    // window.location = '/';
+  }
+
+  render() {
+    return (
+      <div className="container-fluid layout-container">
+        {/* Body Header */}
+        <div class="container-fluid p-3 mb-4 bg-primary text-white text-center">
+          <h2>Reminders</h2>
+        </div>
+        {/* Body Header */}
+        <div className="container">
+          <Row className="mb-3">
+            <Col>
+              <Link to="/">Create Event</Link>
+            </Col>
+            <Col className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7">
+              <div className="d-flex flex-row">
+                <span className="input-group-text" id="current-date">
+                  Date
+                </span>
+                <DatePicker
+                  selected={this.state.date}
+                  onChange={this.handleDateChange}
+                  dateFormat="mm/dd/yyyy"
+                />
+              </div>
+            </Col>
+          </Row>
+          <EventList />
         </div>
       </div>
-  );
-};
-
-export default Notes;
+    );
+  }
+}
