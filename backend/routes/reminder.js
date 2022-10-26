@@ -8,7 +8,20 @@ router.get("/", authenticate, async (req, res, next) => {
   const _id = req.user._id;
 
   try {
-    const events = await Event.find({ user: _id }).sort({ start: -1 });
+    const events = await Event.find({ user: _id }).sort({ createdAt: -1 });
+    res.status(200).json(events);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error occurred while fetching" });
+  }
+});
+
+/* GET events listing. */
+router.get("/:date", authenticate, async (req, res, next) => {
+  const _id = req.user._id;
+
+  try {
+    const events = await Event.find({ user: _id, date: req.params.date }).sort({ createdAt: -1 });
     res.status(200).json(events);
   } catch (err) {
     console.log(err);
