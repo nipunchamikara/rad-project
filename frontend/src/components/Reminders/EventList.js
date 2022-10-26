@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import EventRepr from "./event.repr";
+import Event from "./Event";
 
-function EventList() {
-  const eventList = useSelector((state) => state.events);
+function EventList({ useDate, setShowEventCreator }) {
+  const eventList = useSelector((state) => state.reminders);
 
   return (
     <div className="container">
@@ -12,7 +12,9 @@ function EventList() {
           <thead className="thead-light table-header">
             <tr>
               <th scope="col">Description</th>
-              <th scope="col">Duration</th>
+              <th scope="col" colSpan="2">
+                Duration
+              </th>
               <th scope="col">Remind Me</th>
               <th scope="col">Actions</th>
             </tr>
@@ -20,7 +22,13 @@ function EventList() {
           <tbody>
             {eventList && eventList.length > 0 ? (
               eventList.map((event) => {
-                return <EventRepr targetEvent={event} />;
+                return (
+                  <Event
+                    key={event._id}
+                    event={event}
+                    setShowEvtCreator={setShowEventCreator}
+                  />
+                );
               })
             ) : (
               <tr>
