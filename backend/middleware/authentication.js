@@ -10,7 +10,6 @@ async function authenticate(req, res, next) {
     if (!auth || !auth.startsWith("Bearer ")) {
       return res.status(401).json({ error: "No token provided" });
     }
-    console.log(auth);
     const token = auth.split(" ")[1];
 
     const decode = jwt.verify(token, "secret123");

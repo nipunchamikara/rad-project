@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import {LOGOUT} from "../../state/constants/actionTypes";
+import { LOGOUT } from "../../state/constants/actionTypes";
 
 import Notes from "../Notes/Notes";
 import Todos from "../Todo/Todos";
 import Medicine from "../Medicine/Medicine";
+import Reminders from "../Reminders/Reminders";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -56,8 +57,9 @@ const Home = () => {
       </nav>
       <div className="container">
         <Notes />
-        <Todos/>
-        <Medicine/>
+        <Todos />
+        <Reminders />
+        <Medicine />
       </div>
     </>
   );
