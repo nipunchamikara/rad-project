@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Button, InputGroup, Form } from "react-bootstrap";
 
-export default class CreateEvent extends Component {
+export default class EventCreator extends Component {
   constructor(props) {
     super(props);
 
@@ -70,7 +70,9 @@ export default class CreateEvent extends Component {
   render() {
     return (
       <div class="card event-card">
-        <div class="card-header event-card-header">Add Event</div>
+        <div class="card-header event-card-header">
+          {this.props.targetEvent ? "Edit Event" : "Add Event"}
+        </div>
         <div class="card-body">
           <Form onSubmit={this.onSubmit}>
             <Form.Group className="mb-3" controlId="formDescription">

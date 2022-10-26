@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, InputGroup, Form } from "react-bootstrap";
-import EventList from "./event-list";
 import moment from "moment/moment";
+import EventList from "./event-list";
+import EventCreator from "./create-event";
+import "./style/style.css";
 
 function ReminderLayout() {
   const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
+  const [showEvtCreator, setShowEvtCreator] = useState(false);
 
-  const handleDateChange = e => setDate(e.target.value);
+  const handleDateChange = (e) => setDate(e.target.value);
+  const handleAddEvtBtn = () => setShowEvtCreator(true);
 
   return (
     <div className="container-fluid layout-container">
@@ -19,7 +23,15 @@ function ReminderLayout() {
       <div className="container">
         <Row className="mb-3">
           <Col>
-            <Link to="/">Create Event</Link>
+            <Button
+              type="button"
+              variant="danger"
+              className="btn-circle btn-circle-sm m-1"
+              value={ReminderLayout}
+              onClick={handleAddEvtBtn}
+            >
+              Create Event
+            </Button>
           </Col>
           <Col className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7">
             <Form>
@@ -27,15 +39,20 @@ function ReminderLayout() {
                 <span className="input-group-text" id="current-date">
                   Date
                 </span>
-                <Form.Control type="date" value={date} onChange={handleDateChange} />
+                <Form.Control
+                  type="date"
+                  value={date}
+                  onChange={handleDateChange}
+                />
               </InputGroup>
             </Form>
           </Col>
         </Row>
         <EventList useDate={date} />
       </div>
+      {showEvtCreator ? <EventCreator /> : null}
     </div>
-  )
+  );
 }
 
 export default ReminderLayout;
