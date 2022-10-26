@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Button, InputGroup, Form } from "react-bootstrap";
+import axios from "axios";
+import moment from "moment/moment";
 
 export default class EventCreator extends Component {
   constructor(props) {
@@ -14,8 +16,8 @@ export default class EventCreator extends Component {
 
     this.state = {
       description: "",
-      start: new Date(),
-      end: new Date(),
+      start: moment(new Date()).format("YYYY-MM-DD"),
+      end: moment(new Date()).format("YYYY-MM-DD"),
       all_day: false,
       remind: 0,
     };
@@ -27,15 +29,15 @@ export default class EventCreator extends Component {
     });
   }
 
-  onChangeStart(date) {
+  onChangeStart(e) {
     this.setState({
-      start: date,
+      start: e.target.value,
     });
   }
 
-  onChangeEnd(date) {
+  onChangeEnd(e) {
     this.setState({
-      end: date,
+      end: e.target.value,
     });
   }
 
@@ -62,7 +64,15 @@ export default class EventCreator extends Component {
       remind: this.state.remind,
     };
 
-    console.log(event);
+    if (this.props.targetEvent) {
+      axios.post("http://localhost:3030/events/", event).then((res) => {
+        console.log(res.data);
+      });
+    } else {
+      axios.post("http://localhost:3030/events/" + this.props.targetEvent._id, event).then((res) => {
+        console.log(res.data);
+      });
+    }
 
     window.location = "/";
   }
