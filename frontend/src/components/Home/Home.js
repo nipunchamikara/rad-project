@@ -7,6 +7,7 @@ import {LOGOUT} from "../../state/constants/actionTypes";
 import Notes from "../Notes/Notes";
 import Todos from "../Todo/Todos";
 import Medicine from "../Medicine/Medicine";
+import Reminders from "../Reminders/Reminders";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const Home = () => {
         <Notes />
         <Todos/>
         <Medicine/>
+        <Reminders />
       </div>
     </>
   );

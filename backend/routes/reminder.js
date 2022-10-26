@@ -3,21 +3,33 @@ const router = express.Router();
 const Event = require("../models/reminder.model");
 const authenticate = require("../middleware/authentication");
 
-/* GET events listing. */
-router.get("/", authenticate, async (req, res, next) => {
-  const _id = req.user._id;
 
-  try {
-    const events = await Event.find({ user: _id }).sort({ start: -1 });
-    res.status(200).json(events);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Error occurred while fetching" });
+/* find events (list) by date. If date not given, then find all */
+router.get("*", authenticate, async (req, res, next) => {
+  const _id = req.user._id;
+  const _date = req.query.date;
+
+  if (_date === undefined) {
+    try {
+      const events = await Event.find({ user: _id }).sort({ createdAt: -1 });
+      res.status(200).json(events);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Error occurred while fetching" });
+    }
+  } else {
+    try {
+      const events = await Event.find({ user: _id, date: req.params.date }).sort({ createdAt: -1 });
+      res.status(200).json(events);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Error occurred while fetching" });
+    }
   }
 });
 
 /* POST events listing. */
-router.post("/", authenticate, async (req, res, next) => {
+router.post("/add", authenticate, async (req, res, next) => {
   const _id = req.user._id;
   const description = req.body.description;
   const start = Date.parse(req.body.start);
