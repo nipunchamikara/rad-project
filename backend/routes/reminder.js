@@ -18,6 +18,7 @@ router.get("*", authenticate, async (req, res, next) => {
     }
   } else {
     try {
+      console.log(date);
       const events = await Event.find({
         user: _id,
         date: date,
@@ -32,18 +33,14 @@ router.get("*", authenticate, async (req, res, next) => {
 
 /* POST events listing. */
 router.post("/add", authenticate, async (req, res, next) => {
-  const _id = req.user._id;
-  const description = req.body.description;
-  const start = Date.parse(req.body.start);
-  const end = Date.parse(req.body.end);
-  const all_day = Boolean(req.body.all_day);
-  const remind = Number(req.body.remind);
-
   try {
+    const _id = req.user._id;
+    const { description, remind, start, end, date, all_day } = req.body;
     const event = new Event({
       description,
       start,
       end,
+      date,
       all_day,
       remind,
       user: _id,

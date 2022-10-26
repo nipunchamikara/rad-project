@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Button, InputGroup, Form } from "react-bootstrap";
+import { Row, Col, InputGroup, Form } from "react-bootstrap";
 import moment from "moment/moment";
 import { useDispatch } from "react-redux";
 import { createReminder, updateReminder } from "../../state/actions/reminders";
@@ -9,6 +9,7 @@ function EventCreator(props) {
     description: "",
     start: moment(new Date()).format("HH:mm"),
     end: moment(new Date()).format("HH:mm"),
+    date: moment(new Date()).format("YYYY-MM-DD"),
     all_day: false,
     remind: 0,
   });
@@ -46,29 +47,41 @@ function EventCreator(props) {
             />
           </Form.Group>
           <Row>
-            <Form.Group className="col-md-4 mb-3" controlId="formStart">
+            <Form.Group className="col-md-3 mb-3" controlId="formStart">
               <Form.Label>Start Time: </Form.Label>
               <Form.Control
                 type="time"
+                name="start"
                 value={event.start}
                 onChange={handleChange}
                 disabled={event.all_day}
               />
             </Form.Group>
-            <Form.Group className="col-md-4 mb-3" controlId="formEnd">
+            <Form.Group className="col-md-3 mb-3" controlId="formEnd">
               <Form.Label>End Time: </Form.Label>
               <Form.Control
                 type="time"
+                name="end"
                 value={event.end}
                 onChange={handleChange}
                 disabled={event.all_day}
               />
             </Form.Group>
-            <Form.Group className="col-md-4 mb-3" controlId="formRemind">
+            <Form.Group className="col-md-3 mb-3" controlId="formDate">
+              <Form.Label>Date: </Form.Label>
+              <Form.Control
+                type="date"
+                name="date"
+                value={event.date}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="col-md-3 mb-3" controlId="formRemind">
               <Form.Label>Remind before: </Form.Label>
               <InputGroup>
                 <Form.Control
                   type="text"
+                  name="remind"
                   value={event.remind}
                   onChange={handleChange}
                   aria-describedby="time-format"
@@ -82,6 +95,7 @@ function EventCreator(props) {
           <Form.Group className="mb-4" controlId="formAllDay">
             <Form.Check
               type="checkbox"
+              name="all_day"
               label="All Day?"
               checked={event.all_day}
               onChange={handleChange}
