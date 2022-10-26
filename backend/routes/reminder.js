@@ -3,13 +3,12 @@ const router = express.Router();
 const Event = require("../models/reminder.model");
 const authenticate = require("../middleware/authentication");
 
-
 /* find events (list) by date. If date not given, then find all */
 router.get("*", authenticate, async (req, res, next) => {
   const _id = req.user._id;
-  const _date = req.query.date;
+  const date = req.query.date;
 
-  if (_date === undefined) {
+  if (date === undefined) {
     try {
       const events = await Event.find({ user: _id }).sort({ createdAt: -1 });
       res.status(200).json(events);
@@ -19,7 +18,10 @@ router.get("*", authenticate, async (req, res, next) => {
     }
   } else {
     try {
-      const events = await Event.find({ user: _id, date: req.params.date }).sort({ createdAt: -1 });
+      const events = await Event.find({
+        user: _id,
+        date: date,
+      }).sort({ createdAt: -1 });
       res.status(200).json(events);
     } catch (err) {
       console.log(err);
@@ -65,11 +67,11 @@ router.patch("/:id", authenticate, async (req, res, next) => {
         start: Date.parse(req.body.start),
         end: Date.parse(req.body.end),
         all_day: Boolean(req.body.all_day),
-        remind: Number(req.body.remind)
+        remind: Number(req.body.remind),
       }
     );
 
-    const updatedEvent = await Note.findById({ _id: req.params.id });
+    const updatedEvent = await Event.findById({ _id: req.params.id });
     res.status(200).json(updatedEvent);
   } catch (err) {
     console.log(err);
@@ -87,6 +89,5 @@ router.delete("/:id", authenticate, async (req, res) => {
     res.status(500).json({ error: "Error occurred while deleting" });
   }
 });
-
 
 module.exports = router;

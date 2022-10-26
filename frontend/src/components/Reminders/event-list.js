@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import { useSelector } from "react-redux";
 import EventRepr from "./event.repr";
 
-function EventList(props) {
-  const [eventList, setEventList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .post("http://localhost:3030/events?date=" + props.useDate)
-      .then((response) => {
-        setEventList(response.data);
-      });
-  });
+function EventList() {
+  const eventList = useSelector((state) => state.events);
 
   return (
     <div className="container">
@@ -26,9 +18,17 @@ function EventList(props) {
             </tr>
           </thead>
           <tbody>
-            {eventList.map((event) => {
-              return <EventRepr targetEvent={event} />;
-            })}
+            {eventList && eventList.length > 0 ? (
+              eventList.map((event) => {
+                return <EventRepr targetEvent={event} />;
+              })
+            ) : (
+              <tr>
+                <td className="text-center" colSpan="4">
+                  No events found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

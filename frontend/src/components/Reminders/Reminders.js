@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import { Row, Col, InputGroup, Form, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Row, Col, InputGroup, Form } from "react-bootstrap";
 import moment from "moment/moment";
 import EventList from "./event-list";
 import EventCreator from "./create-event";
-import "./style/style.css";
+import { getReminders } from "../../state/actions/reminders";
 
 function ReminderLayout() {
   const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
   const [showEvtCreator, setShowEvtCreator] = useState(false);
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getReminders(date));
+  }, [date]);
+
   const handleDateChange = (e) => setDate(e.target.value);
   const handleAddEvtBtn = () => setShowEvtCreator(true);
 
   return (
-    <div className="container-fluid layout-container">
-      {/* Body Header */}
-      <div class="container-fluid p-3 mb-4 bg-primary text-white text-center">
-        <h2>Reminders</h2>
-      </div>
-      {/* Body Header */}
+    <div className="container-fluid layout-container shadow-lg p-5 mb-5">
+      <h1>Reminders</h1>
       <div className="container">
         <Row className="mb-3">
           <Col>
-            <Button
+            <button
               type="button"
-              variant="danger"
-              className="btn-circle btn-circle-sm m-1"
-              value={ReminderLayout}
+              className="btn btn-outline-primary"
               onClick={handleAddEvtBtn}
             >
               Create Event
-            </Button>
+            </button>
           </Col>
           <Col className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7">
             <Form>
@@ -49,7 +49,9 @@ function ReminderLayout() {
         </Row>
         <EventList useDate={date} />
       </div>
-      {showEvtCreator ? <EventCreator /> : null}
+      {showEvtCreator ? (
+        <EventCreator setShowEvtCreator={setShowEvtCreator} />
+      ) : null}
     </div>
   );
 }
