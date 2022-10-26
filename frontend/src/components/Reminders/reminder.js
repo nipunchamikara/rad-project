@@ -7,6 +7,8 @@ import moment from "moment/moment";
 function ReminderLayout() {
   const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
 
+  const handleDateChange = e => setDate(e.target.value);
+
   return (
     <div className="container-fluid layout-container">
       {/* Body Header */}
@@ -25,12 +27,12 @@ function ReminderLayout() {
                 <span className="input-group-text" id="current-date">
                   Date
                 </span>
-                <Form.Control type="date" value={date} onChange={setDate} />
+                <Form.Control type="date" value={date} onChange={handleDateChange} />
               </InputGroup>
             </Form>
           </Col>
         </Row>
-        <EventList />
+        <EventList useDate={date} />
       </div>
     </div>
   )

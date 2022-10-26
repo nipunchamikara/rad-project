@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import EventRepr from "./event.repr";
 
 function EventList(props) {
   const [eventList, setEventList] = useState([]);
 
   useEffect(() => {
-    axios.post("http://localhost:3030/medicine/all").then((response) => {
-      setEventList(response.data);
-    });
+    axios
+      .post("http://localhost:3030/events?date=" + props.useDate)
+      .then((response) => {
+        setEventList(response.data);
+      });
   });
 
   return (
@@ -17,23 +20,14 @@ function EventList(props) {
           <thead className="thead-light table-header">
             <tr>
               <th scope="col">Description</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">All Day</th>
+              <th scope="col">Duration</th>
               <th scope="col">Remind Me</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             {eventList.map((event) => {
-              return (
-                <tr>
-                  <td>{event.description}</td>
-                  <td>{event.start}</td>
-                  <td>{event.end}</td>
-                  <td>{event.all_day}</td>
-                  <td>{event.remind}</td>
-                </tr>
-              );
+              return <EventRepr targetEvent={event} />;
             })}
           </tbody>
         </table>
